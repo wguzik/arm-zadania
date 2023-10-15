@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "project_name": {
+            "type": "string",
+            "defaultValue": "wsblearn",
+            "metadata": {
+                "description": "Storage Account name"
+            }
+        },
+        "project_owner": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of project owner"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "sa_name": "[concat('sa', parameters('project_name'), uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('sa_name')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2023-01-01",
+            "tags": {
+                "owner": "[parameters('project_owner')]"
+            },
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            }
+        }
+    ],
+    "outputs": {}
+}
